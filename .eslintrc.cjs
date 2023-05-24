@@ -19,12 +19,5 @@ module.exports = {
     "tno-unused-vars" : 0,
     "eslintno-undef" : 0,
     "react/prop-types": "off"
-  },
-  {
-    "env": {
-      "browser": true,
-      "amd": true,
-      "node": true
-  },
   }
 }
