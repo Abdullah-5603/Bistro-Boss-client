@@ -1,6 +1,18 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../../Providers/AuthProvider";
+import { FaUser } from "react-icons/fa";
 
 const NavBar = () => {
+    const {signOutUser, user} = useContext(AuthContext)
+
+    const handleSignOut = () =>{
+        signOutUser()
+        .then(result=>{})
+        .catch(error=>{
+            console.log(error.message)
+        })
+    }
 
     const navOptions = <>
         <li className="uppercase font-bold"><Link to='/'>home</Link></li>
@@ -10,7 +22,7 @@ const NavBar = () => {
 
     return (
         <>
-            <div className="navbar fixed z-10 bg-opacity-30 max-w-screen-xl bg-black text-white">
+            <div className="navbar fixed z-10 bg-opacity-30 md:px-16 bg-black text-white">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -28,7 +40,15 @@ const NavBar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
+                    {
+                        user ? <div className="flex space-x-5 items-center">
+                            {
+                                user?.photoURL ? <img className="w-6 h-6 rounded-full" src={user?.photoURL} alt="" /> : <FaUser className="h-5 w-5"/>
+                            }
+                            <button onClick={handleSignOut} className="font-bold">Sign Out</button>
+                        </div> : 
                     <Link to='/login'><button className="font-bold">Login</button></Link>
+                    }
                 </div>
             </div>
         </>

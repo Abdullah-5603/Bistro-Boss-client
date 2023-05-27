@@ -7,6 +7,7 @@ import Menu from "../Pages/Menu/Menu";
 import OrderMenu from "../Pages/OrderMenu/OrderMenu";
 import Login from "../Pages/Login/Login";
 import SignUp from "../Pages/SignUp/SignUp";
+import PrivateRoute from "./PrivateRoute";
 
 
 
@@ -26,7 +27,7 @@ import SignUp from "../Pages/SignUp/SignUp";
         },
         {
           path : 'orderMenu/:category',
-          element : <OrderMenu/>
+          element : <PrivateRoute><OrderMenu/></PrivateRoute>
         }
       ]
     },
