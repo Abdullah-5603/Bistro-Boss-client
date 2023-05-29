@@ -1,23 +1,33 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../Providers/AuthProvider";
-import { FaUser } from "react-icons/fa";
+import { FaShoppingCart, FaUser } from "react-icons/fa";
+import useCart from "../../../Hooks/useCart";
 
 const NavBar = () => {
-    const {signOutUser, user} = useContext(AuthContext)
+    const { signOutUser, user } = useContext(AuthContext)
+    const {cart} = useCart()
 
-    const handleSignOut = () =>{
+    const handleSignOut = () => {
         signOutUser()
-        .then(result=>{})
-        .catch(error=>{
-            console.log(error.message)
-        })
+            .then(result => { })
+            .catch(error => {
+                console.log(error.message)
+            })
     }
 
     const navOptions = <>
         <li className="uppercase font-bold"><Link to='/'>home</Link></li>
         <li className="uppercase font-bold"><Link to='/menu'>menu</Link></li>
         <li className="uppercase font-bold"><Link to='/orderMenu/salad'>order menu</Link></li>
+        <li>
+            <Link to='/'>
+                <button className="btn gap-2">
+                    <FaShoppingCart className="w-5 h-5"/>
+                    <div className="badge">+{cart?.length || 0}</div>
+                </button>
+            </Link>
+        </li>
     </>
 
     return (
@@ -43,11 +53,11 @@ const NavBar = () => {
                     {
                         user ? <div className="flex space-x-5 items-center">
                             {
-                                user?.photoURL ? <img className="w-6 h-6 rounded-full" src={user?.photoURL} alt="" /> : <FaUser className="h-5 w-5"/>
+                                user?.photoURL ? <Link to='/dashboard'><img className="w-6 h-6 rounded-full" src={user?.photoURL} alt=""/></Link> : <Link to='/dashboard'><FaUser className="h-5 w-5"/></Link>
                             }
                             <button onClick={handleSignOut} className="font-bold">Sign Out</button>
-                        </div> : 
-                    <Link to='/login'><button className="font-bold">Login</button></Link>
+                        </div> :
+                            <Link to='/login'><button className="font-bold">Login</button></Link>
                     }
                 </div>
             </div>

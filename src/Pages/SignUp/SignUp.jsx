@@ -8,6 +8,7 @@ import { AuthContext } from '../../Providers/AuthProvider';
 import Loader from '../Shared/Loader/Loader';
 import { Helmet } from 'react-helmet-async';
 import Swal from 'sweetalert2';
+import SocialLogin from '../Shared/SocialLogin/SocialLogin';
 
 const SignUp = () => {
     const { setUser, loading, setLoading, createUser, googleLogin, updateUserProfile } = useContext(AuthContext)
@@ -32,16 +33,31 @@ const SignUp = () => {
                 const user = result.user;
                 user.displayName = name;
                 user.photoURL = photoURL
-                Swal.fire({
-                    icon: 'success',
-                    text: 'Sign Up Successfully',
-                })
-                console.log(user)
-                navigate('/')
-                setLoading(false)
-                form.reset()
 
-                setUser(user)
+                const savedUser = {name : name, email : email}
+
+                fetch('http://localhost:3000/users',{
+                    method : 'POST',
+                    headers : {
+                        'content-type' : 'application/json'
+                    },
+                    body : JSON.stringify(savedUser)
+                })
+                .then( res => res.json())
+                .then(data => {
+                    if(data.insertedId){
+                        Swal.fire({
+                            icon: 'success',
+                            text: 'Sign Up Successfully',
+                        })
+                        console.log(user)
+                        navigate('/')
+                        setLoading(false)
+                        form.reset()
+                        setUser(user)
+                    }
+                })
+
             })
             .catch(error => {
                 const errorMessage = error.message;
@@ -54,23 +70,7 @@ const SignUp = () => {
             })
     }
 
-    const handleGoogleLogin = () => {
-        googleLogin()
-            .then(result => {
-                const user = result.user;
-                setUser(user)
-                Swal.fire({
-                    icon: 'success',
-                    text: 'Login Successfully',
-                })
-                navigate('/')
-                setLoading(false)
-            })
-            .catch(error => {
-                const errorMessage = error.message;
-                console.log(errorMessage)
-            })
-    }
+
     return (
         <>
             <Helmet>
@@ -111,11 +111,7 @@ const SignUp = () => {
                             </form>
                             <p className='text-[#D1A054] text-center'>Already have an account ? <Link to='/login'><span className='font-bold underline'>Please Login</span></Link></p>
                             <p className='font-bold text-center'>Or Sign In With</p>
-                            <div className='flex justify-between md:w-1/3 mx-auto mt-3 cursor-pointer'>
-                                <div className='p-3 rounded-full border-2 border-[#444444]'><FaFacebookF className='h-5 w-5' /></div>
-                                <div onClick={handleGoogleLogin} className='p-3 rounded-full border-2 border-[#444444]'><BsGoogle className='h-5 w-5' /></div>
-                                <div className='p-3 rounded-full border-2 border-[#444444]'><BsGithub className='h-5 w-5' /></div>
-                            </div>
+                            <SocialLogin/>
                         </div>
                     </div>
                 </div>

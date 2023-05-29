@@ -9,6 +9,7 @@ import { AuthContext } from '../../Providers/AuthProvider';
 import Loader from '../Shared/Loader/Loader';
 import { Helmet } from 'react-helmet-async';
 import Swal from 'sweetalert2'
+import SocialLogin from '../Shared/SocialLogin/SocialLogin';
 
 const Login = () => {
     const { loading, setUser, setLoading, loginUser, googleLogin } = useContext(AuthContext);
@@ -53,26 +54,6 @@ const Login = () => {
                 } else {
                     setError('Login failed. Please try again.');
                 }
-                setLoading(false);
-            });
-    };
-
-    const handleGoogleLogin = () => {
-        setLoading(true);
-        googleLogin()
-            .then((result) => {
-                const user = result.user;
-                setUser(user);
-                Swal.fire({
-                    icon: 'success',
-                    text: 'Login Successfully',
-                  })
-                  navigate(from, {replace : true});
-                setLoading(false);
-            })
-            .catch((error) => {
-                const errorMessage = error.message;
-                setError('Login failed. Please try again.');
                 setLoading(false);
             });
     };
@@ -128,11 +109,12 @@ const Login = () => {
                                 New Here ? <Link to="/signUp"><span className="font-bold underline">Create An Account</span></Link>
                             </p>
                             <p className="font-bold text-center">Or Sign In With</p>
-                            <div className="flex justify-between md:w-1/3 mx-auto mt-3 cursor-pointer">
+                            <SocialLogin/>
+                            {/* <div className="flex justify-between md:w-1/3 mx-auto mt-3 cursor-pointer">
                                 <div className="p-3 rounded-full border-2 border-[#444444]"><FaFacebookF className="h-5 w-5" /></div>
                                 <div onClick={handleGoogleLogin} className="p-3 rounded-full border-2 border-[#444444]"><BsGoogle className="h-5 w-5" /></div>
                                 <div className="p-3 rounded-full border-2 border-[#444444]"><BsGithub className="h-5 w-5" /></div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

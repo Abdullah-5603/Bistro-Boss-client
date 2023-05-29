@@ -73,7 +73,7 @@ const OrderMenu = () => {
     }
 
     return (
-        <div className=''>
+        <div className='mx-auto'>
             <Helmet>
                 <title>Food Land | Order Menu</title>
             </Helmet>
@@ -85,7 +85,7 @@ const OrderMenu = () => {
                 <p onClick={() => handleTab('dessert')} className={`tab uppercase ${tabIndex === 3 && ' tab-bordered border-[#BB8506] font-bold text-[#BB8506]'}`}>Desserts</p>
                 <p onClick={() => handleTab('drinks')} className={`tab uppercase ${tabIndex === 4 && ' tab-bordered border-[#BB8506] font-bold text-[#BB8506]'}`}>Drinks</p>
             </div>
-            <div className='grid md:grid-cols-3 grid-cols-1 gap-5 my-10'>
+            <div className='grid md:grid-cols-3 grid-cols-1 gap-5 my-10 md:w-11/12 mx-auto'>
                 { 
                     loading ? <p>Loading.......</p> :
                     tabMenu.map(tm => <MenuCard
