@@ -14,8 +14,6 @@ const OrderMenu = () => {
     const [menu] = useMenu()
     const [tabMenu, setTabMenu] = useState([])
     const [loading, setLoading] = useState(true)
-    // const [active, setActive] = useState('')
-    // console.log(tabIndex)
 
     useEffect(()=>{
         if(currentIndex === 0){

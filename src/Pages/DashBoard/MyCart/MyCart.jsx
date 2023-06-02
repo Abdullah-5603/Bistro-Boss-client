@@ -5,33 +5,34 @@ import useCart from '../../../Hooks/useCart';
 import { FaTrash, FaTrashAlt } from 'react-icons/fa';
 import { AuthContext } from '../../../Providers/AuthProvider';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 const MyCart = () => {
     const { cart, refetch } = useCart()
-    const {user} = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
 
-    const totalPrice = cart.reduce((sum, item) => item.price + sum , 0);
+    const totalPrice = cart.reduce((sum, item) => item.price + sum, 0);
 
     const handleDelete = _id => {
         fetch(`http://localhost:3000/carts?id=${_id}`, {
-          method: 'DELETE'
+            method: 'DELETE'
         })
-          .then(res => res.json())
-          .then(data => {
-            if(data.deletedCount > 0){
-                refetch();
-                Swal.fire({
-                    icon: 'success',
-                    text: 'Item removed successfully',
-                  })
-            }
-            console.log(data);
-          })
-          .catch(error => {
-            console.log(error.message);
-          });
-      };
-      
+            .then(res => res.json())
+            .then(data => {
+                if (data.deletedCount > 0) {
+                    refetch();
+                    Swal.fire({
+                        icon: 'success',
+                        text: 'Item removed successfully',
+                    })
+                }
+                console.log(data);
+            })
+            .catch(error => {
+                console.log(error.message);
+            });
+    };
+
     // console.log(cart)
     return (
         <div>
@@ -43,7 +44,7 @@ const MyCart = () => {
                 <div className='flex justify-between items-center p-10'>
                     <p className='uppercase text-2xl font-[Cinzel] font-semibold'>Total Orders : {cart.length}</p>
                     <p className='uppercase text-2xl font-[Cinzel] font-semibold'>Total Price : ${totalPrice.toFixed(2)}</p>
-                    <button className='uppercase bg-[#D1A054] p-2 text-white rounded-md font-[Cinzel] font-semibold'>Pay</button>
+                    <Link to='/dashboard/reservation'>                    <button className='uppercase bg-[#D1A054] p-2 text-white rounded-md font-[Cinzel] font-semibold'>Pay</button></Link>
                 </div>
                 <div className="overflow-x-auto px-10">
                     <table className="table w-full">
@@ -59,16 +60,16 @@ const MyCart = () => {
                         </thead>
                         <tbody>
                             {/* row 2 */}
-                        {
-                            cart.map((ct, index) =>                             
-                            <tr key={ct._id} className="hover">
-                            <th>{index + 1}</th>
-                            <td><img className='w-18 h-14' src={ct.image} alt="" /></td>
-                            <td>{ct.name}</td>
-                            <td>${ct.price}</td>
-                            <td><div onClick={()=>handleDelete(ct._id)} className='bg-red-700 text-white p-2 flex justify-center rounded-md md:w-1/3'><FaTrashAlt/></div></td>
-                        </tr>)
-                        }
+                            {
+                                cart.map((ct, index) =>
+                                    <tr key={ct._id} className="hover">
+                                        <th>{index + 1}</th>
+                                        <td><img className='w-18 h-14' src={ct.image} alt="" /></td>
+                                        <td>{ct.name}</td>
+                                        <td>${ct.price}</td>
+                                        <td><div onClick={() => handleDelete(ct._id)} className='bg-red-700 text-white p-2 flex justify-center rounded-md md:w-1/3'><FaTrashAlt /></div></td>
+                                    </tr>)
+                            }
                         </tbody>
                     </table>
                 </div>

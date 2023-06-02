@@ -12,7 +12,6 @@ const SocialLogin = () => {
     const from = location.state?.form?.pathname || '/'
 
     const handleGoogleLogin = () => {
-        setLoading(true);
         googleLogin()
             .then((result) => {
                 const user = result.user;

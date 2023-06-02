@@ -2,8 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import bgImg from '../../assets/others/authentication.png';
 import loginImg from '../../assets/others/authentication2.png';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FaFacebookF } from 'react-icons/fa';
-import { BsGithub, BsGoogle } from 'react-icons/bs';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import { AuthContext } from '../../Providers/AuthProvider';
 import Loader from '../Shared/Loader/Loader';
@@ -12,7 +10,7 @@ import Swal from 'sweetalert2'
 import SocialLogin from '../Shared/SocialLogin/SocialLogin';
 
 const Login = () => {
-    const { loading, setUser, setLoading, loginUser, googleLogin } = useContext(AuthContext);
+    const { loading, setLoading, loginUser} = useContext(AuthContext);
     const captchaRef = useRef();
     const [disabled, setDisabled] = useState(true);
     const [error, setError] = useState('');
@@ -35,7 +33,6 @@ const Login = () => {
             setError('Password must be at least 6 characters');
             return;
         }
-        setLoading(true);
         loginUser(email, password)
             .then((result) => {
                 const user = result.user;
@@ -44,7 +41,7 @@ const Login = () => {
                     text: 'Login Successfully',
                   })
                 navigate(from, {replace : true});
-                setLoading(false);
+                // setLoading(false);
                 form.reset();
             })
             .catch((error) => {
@@ -55,6 +52,7 @@ const Login = () => {
                     setError('Login failed. Please try again.');
                 }
                 setLoading(false);
+                console.log(errorMessage)
             });
     };
 
@@ -110,11 +108,6 @@ const Login = () => {
                             </p>
                             <p className="font-bold text-center">Or Sign In With</p>
                             <SocialLogin/>
-                            {/* <div className="flex justify-between md:w-1/3 mx-auto mt-3 cursor-pointer">
-                                <div className="p-3 rounded-full border-2 border-[#444444]"><FaFacebookF className="h-5 w-5" /></div>
-                                <div onClick={handleGoogleLogin} className="p-3 rounded-full border-2 border-[#444444]"><BsGoogle className="h-5 w-5" /></div>
-                                <div className="p-3 rounded-full border-2 border-[#444444]"><BsGithub className="h-5 w-5" /></div>
-                            </div> */}
                         </div>
                     </div>
                 </div>
